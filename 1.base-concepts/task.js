@@ -21,12 +21,14 @@ else {
   return arr; // array
 }
 
-function calculateTotalMortgage(percent, conntribution, amount, countMonths) {
-	let P - percent / 100 / 12;
-	let S - amount - contribution;
-	let n - countMonths;
-	
-	let summPerMonth - S * (P + (((1 + P)**n) - 1)));
-	let total - (summPerMonth*countMonths).tofixed(2);
-	return total;
+function calculateTotalMortgage(percent, contribution, amount, countMonths) {
+  if (!isNaN(percent) && !isNaN(contribution) && !isNaN(amount)) {
+      const perMonth = percent / 100 / 12;
+      const bodyCredit = amount - contribution;
+      const monthly = bodyCredit * (perMonth + (perMonth / (((1 + perMonth) ** countMonths) - 1)));
+      const totalSum = parseFloat((monthly * countMonths).toFixed(2));
+      return totalSum;
+  }
+  return false;
+
 }
