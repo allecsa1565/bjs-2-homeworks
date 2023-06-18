@@ -1,12 +1,21 @@
-function compareArrays(arr1, arr2) {
-  if (arr1.length === arr2.length)
-    return arr1.every((element, index) => element === arr2[index]);
-  else return false;
-}
-// let result = JSON.stringify(arr1)==JSON.stringify(arr2); //ещё один рабочий вариант
-// return result;
+function getArrayParams(arr) {
+  let min, max, sum, avg;
 
-function advancedFilter(arr) {
-  let result = arr.filter(i => i > 0).filter(i => i % 3 === 0).map(i => i * 10)
-  return result;
+  min = Infinity;
+  max = -Infinity;
+  sum = 0;
+    for (let i = 0; i < arr.length; i += 1) {
+      if(arr[i] < min)
+        min = arr[i]; 
+     
+     if(arr[i] > max)
+        max = arr[i];
+      
+      sum += arr[i];
+    
+    }
+    avg = +(sum / arr.length).toFixed(2)
+    
+    
+  return { min: min, max: max, avg: avg };
 }
