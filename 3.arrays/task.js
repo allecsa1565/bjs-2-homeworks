@@ -1,25 +1,9 @@
-function getArrayParams(arr) {
-  let min, max, sum, avg;
-
-  min = Infinity;
-  max = -Infinity;
-  sum = 0;
-    for (let i = 0; i < arr.length; i += 1) {
-      if(arr[i] < min)
-        min = arr[i]; 
-     
-     if(arr[i] > max)
-        max = arr[i];
-      
-      sum += arr[i];
-    
-    }
-    avg = +(sum / arr.length).toFixed(2)
-    
-    
-  return { min: min, max: max, avg: avg };
+//Задание 1
+function compareArrays(arr1, arr2) {
+  return arr1.length === arr2.length && arr1.every((item, idx) => item === arr2[idx]); 
 }
 
-function getAverageAge(people) {
-  return Math.ceil(people.reduce((acc, cur) => acc + (cur.died-cur.born), 0) / people.length);
+//Задание 2
+function advancedFilter(arr) {
+  return arr.filter(item => item > 0 && item % 3 === 0).map(item => item *10);
 }
