@@ -1,5 +1,4 @@
 ﻿'use strict'
-// Задание 1
 function getArrayParams(arr) {
   let min = Infinity;
   let max = -Infinity;
@@ -18,27 +17,39 @@ function getArrayParams(arr) {
   return { min:min, max:max, avg:avg };
 }
 
-// Задание 2
 function worker(arr) {
   let sum = 0;
-  for (let i = 0; i < arr.length; i++) {
-    sum = sum + arr[i];
+  let arrLength = arr.length;
+
+  for (j = 0; j < arrLength; j += 1) {
+    sum = sum + arr[j]; //вычисляем сумму элементов массмва arr[]
   }
+
   return sum;
 }
 
 function makeWork(arrOfArr, func) {
   let max = -Infinity;
-  for (let i = 0; i < arrOfArr.length; i++) {
-    let arrSum = func(arrOfArr[i]);
-    if (arrSum > max) {
-      max = arrSum;
-    }
+  let arrOfArrLength = arrOfArr.length;
+
+  for (i = 0; i < arrOfArrLength; i += 1) {
+      arrResultElement = func(arrOfArr[i]);
+      if (arrResultElement > max) max = arrResultElement;//ищем максимум
   }
+
   return max;
 }
 
-// Задание 3
 function worker2(arr) {
-  return getArrayParams(arr).max - getArrayParams(arr).min;
+  let min = arr[0];
+   let max = arr[0];
+   let arrLength = arr.length;
+    for (l = 0; l < arrLength; l += 1) {
+      if (arr[l] < min) min = arr[l]; //ищем минимум
+      if (arr[l] > max) max = arr[l]; //ищем максимум
+    }
+
+    let delta = max - min; //вычисляем расстояние между мин и макс элементами массива arr[]
+    
+    return delta;
 }
