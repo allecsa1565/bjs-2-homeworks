@@ -1,22 +1,27 @@
-﻿'use strict'
+// Задание 1
 function getArrayParams(arr) {
-  let min = Infinity;
-  let max = -Infinity;
-  let sum = 0;
-  let avg = 0;
-  for (let i = 0; i < arr.length; i++) {
-    sum = sum + arr[i];
-    if (arr[i] > max) {
-      max = arr[i];
+  let min,max,sum,avg;
+// ############ TASK 1 ####################
+    min = arr[0];
+    max = arr[0];
+    sum = 0;
+    let arrLength = arr.length;
+    for (i = 0; i < arrLength; i += 1) {
+      if (arr[i] < min) { //ищем минимум
+        min = arr[i];
+      }
+      if (arr[i] > max) {//ищем максимум
+        max = arr[i];
+      }
+      sum = sum + arr[i]; //вычисляем сумму элементов массмва arr[]
     }
-    if (arr[i] < min) {
-      min = arr[i];
-    }
-  }
-  avg = parseFloat((sum / arr.length).toFixed(2));
+
+    avg = Number((sum / arrLength).toFixed(2)); //вычисляем среднее значение, обрезаем до 2-го знака после запятой, преобразуем в число
+
   return { min:min, max:max, avg:avg };
 }
 
+// ############# Задание 2 #################
 function worker(arr) {
   let sum = 0;
   let arrLength = arr.length;
@@ -40,6 +45,7 @@ function makeWork(arrOfArr, func) {
   return max;
 }
 
+// ############### Задание 3 ###############
 function worker2(arr) {
   let min = arr[0];
    let max = arr[0];
