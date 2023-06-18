@@ -1,26 +1,31 @@
-function compareArrays(arr1, arr2) {
-  let result;
-  if (arr1.length === arr2.length) {
-    result = arr1.every((item, index) => item === arr2[index]);
-  } else {
-    result = false;
+function solveEquation(a, b, c) {
+  const discriminant = b**2 - 4 * a * c;
+  if (discriminant > 0){
+      return [(- b + Math.sqrt(discriminant)) / (2 * a), (- b - Math.sqrt(discriminant)) / (2 * a)];
+  } else if (discriminant === 0) {
+      return [- b / (2 * a)];
   }
-  return result; // boolean
+  return [];
 }
 
-// function compareArrays(arr1, arr2) {
-//   return arr2.length === arr1.length && arr1.every((item, index) => item === arr2[index]); 
-// }
-
-function advancedFilter(arr) {
-  return arr.filter((item) => item > 0 && item % 3 === 0).map((item) => item * 10)
+function calculateTotalMortgage(percent, contribution, amount, date) {
+if (isNaN(percent)) {
+  return `Параметр "Процентная ставка" содержит неправильное значение "${percent}"`
+} else if (isNaN(contribution)) {
+  return `Параметр "Начальный взнос" содержит неправильное значение "${contribution}"`
+} else if (isNaN(amount)) {
+  return `Параметр "Общая стоимость" содержит неправильное значение "${amount}"`
 }
+const currentMonth = new Date().getMonth();
+const currentYear = new Date().getFullYear();
+const yearsBetweenYears = date.getFullYear() - currentYear;
+const amountMonth = yearsBetweenYears * 12 - currentMonth + date.getMonth();
+const interestRate = (percent / 100) / 12;
+const loanBody = amount - contribution;
+const monthlyPayment = loanBody * (interestRate + (interestRate / (((1 + interestRate) ** amountMonth) - 1)))
+const totalAmount = (monthlyPayment * amountMonth).toFixed(2);
 
-// function advancedFilter(arr) {
-//   return arr.reduce((acc, value) => {
-//     if (value > 0 && value % 3 === 0) {
-//       acc.push(value * 10)
-//     }
-//     return acc;
-//   }, [])
-// }
+console.log(Number(totalAmount));
+
+return Number(totalAmount);
+}
