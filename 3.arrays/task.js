@@ -1,13 +1,17 @@
-function areArraysSame(array1, array2) {
-    if (array1.length !== array2.length) {
-        return;
-    }
-    for (var i = 0; i < array1.length; i++) {
-        if (array1[i] !== array2[i]) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-} 
-alert(areArraysSame([1, 2, 3], [1, 2, 2]));
+function compareArrays(arr1, arr2) {
+  let result;
+  result = arr1.length === arr2.length && arr1.every((n, i) => n === arr2[i]);
+
+  return result; // boolean
+}
+
+function advancedFilter(arr) {
+  let resultArr;
+  resultArr = arr
+  .filter((element) => element > 0) 
+  .filter((element) => element % 3 === 0) 
+  .map((element) => element * 10); 
+
+
+  return resultArr; // array
+}
