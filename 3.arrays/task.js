@@ -1,9 +1,13 @@
 function compareArrays(arr1, arr2) {
-  let result = arr1.length === arr2.length && arr1.every((element, index) => element === arr2[index]);
+  let result;
+  if (arr1.length === arr2.length) {
+    result = arr1.every((item, index) => item === arr2[index]);
+  } else {
+    result = false;
+  }
   return result; // boolean
 }
 
 function advancedFilter(arr) {
-  let resultArr = arr.filter(element => element > 0).filter(element => element % 3 === 0).map(element => element * 10);
-  return resultArr; // array
+  return arr.filter((item) => item > 0 && item % 3 === 0).map((item) => item * 10)
 }
