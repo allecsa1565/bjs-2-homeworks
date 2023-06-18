@@ -1,9 +1,14 @@
-//Задание 1
-function compareArrays(arr1, arr2) {
-  return arr1.length === arr2.length && arr1.every((item, idx) => item === arr2[idx]); 
+function areArraysSame(array1, array2) {
+  if (array1.length !== array2.length) {
+    return false;
+  }
+  for (var i = 0; i < array1.length; i++) {
+    if (array1[i] !== array2[i]) {
+      return false;
+    }
+  }
+  return true;
 }
-
-//Задание 2
-function advancedFilter(arr) {
-  return arr.filter(item => item > 0 && item % 3 === 0).map(item => item *10);
-}
+console.log(areArraysSame([1, 2, 3, 4], [1, 2, 2, 4]));
+console.log(areArraysSame([1, 2, 3, 4], [1, 2, 3, 4]));
+console.log(areArraysSame([1, 2, 3, 4], [1, 2, "3", 4]));
