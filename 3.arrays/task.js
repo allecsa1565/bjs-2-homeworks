@@ -8,7 +8,3 @@ function areArraysSame(array1, array2) {
     }
   }
   return true;
-}
-console.log(areArraysSame([1, 2, 3, 4], [1, 2, 2, 4]));
-console.log(areArraysSame([1, 2, 3, 4], [1, 2, 3, 4]));
-console.log(areArraysSame([1, 2, 3, 4], [1, 2, "3", 4]));
