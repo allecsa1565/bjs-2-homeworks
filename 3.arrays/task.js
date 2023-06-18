@@ -19,3 +19,7 @@ function getArrayParams(arr) {
     
   return { min: min, max: max, avg: avg };
 }
+
+function getAverageAge(people) {
+  return Math.ceil(people.reduce((acc, cur) => acc + (cur.died-cur.born), 0) / people.length);
+}
