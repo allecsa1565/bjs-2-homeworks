@@ -50,3 +50,23 @@ function worker2(arr) {
   }
   return Math.abs(max - min);
 }
+
+function summElementsWorker(...arr) {
+
+}
+
+function differenceMaxMinWorker(...arr) {
+
+}
+
+function differenceEvenOddWorker(...arr) {
+
+}
+
+function averageEvenElementsWorker(...arr) {
+
+}
+
+function makeWork (arrOfArr, func) {
+
+}
