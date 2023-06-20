@@ -39,13 +39,14 @@ function differenceMaxMinWorker(...arr) {
 
 
 function differenceEvenOddWorker(...arr) {
-  let sumEvenEl = 0,
-      sumOddEl = 0,
+  let sumEvenEl = 0;
+      sumOddEl = 0;
       difElem = 0;
       console.log(arr.length);
   if (arr.length === 0) {
     return difElem;
   }
+}
   for (let i = 0 ; i < arr.length ; i++) {
     if (arr[i] % 2 == 0) {
       sumEvenEl += arr[i];
@@ -94,5 +95,6 @@ function worker2(arr) {
       max = arr[i];
     }
   }
-  return Math.abs(max - min);
-}
+ return Math.abs(max - min);
+ }
+
