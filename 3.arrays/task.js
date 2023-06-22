@@ -3,7 +3,8 @@ function compareArrays(arr1, arr2) {
   }
 
   function getUsersNamesInAgeRange(users, gender) {
-	return gender.filter((item) => item > 0 && item % 3 === 0).map((item) => item * 10);
+
+   let result = arr.filter ((item) => item > 0 && item % 3 === 0).map((item) => item * 10);
   }
   
   // function advancedFilter (arr) {
@@ -14,3 +15,4 @@ function compareArrays(arr1, arr2) {
   //     return acc;
   //   }, [])
   // }
+ 
