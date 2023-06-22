@@ -10,9 +10,6 @@ function advancedFilter(arr) {
 	.filter((element) => element % 3 === 0) // оставляем токмо кратные трём
 	.map((element) => element * 10); // оставшиеся элементы умножаем на 10 и формируем из них массив
   
-	return resultArr; // array
-  }
-
 // function advancedFilter(arr) {
 //   return arr.reduce((acc, value) => {
 //     if (value > 0 && value % 3 === 0) {
@@ -21,3 +18,5 @@ function advancedFilter(arr) {
 //     return acc;
 //   }, [])
 // }
+return resultArr; // array
+  }
