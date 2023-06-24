@@ -2,17 +2,8 @@ function compareArrays(arr1, arr2) {
 	return arr1.length === arr2.length && arr1.every((item, idx) => item === arr2[idx]); 
   }
 
-  function getUsersNamesInAgeRange(arr) {
 
-   let result = arr.filter ((item) => item > 0 && item % 3 === 0).map((item) => item * 10);
-  }
-  
-  // function advancedFilter (arr) {
-  //   return arr.reduce((acc, value) => {
-  //     if (value > 0 && value % 3 === 0) {
-  //       acc.push(value * 10);
-  //     }
-  //     return acc;
-  //   }, [])
-  // }
- 
+ function getUsersNamesInAgeRange(users, genders) { 
+    const ages = users.filter( user => user.gender === genders).map(user => user.age);
+    return ages.reduce((a, b) =>(a + b), 0) / ages.length;
+ }
