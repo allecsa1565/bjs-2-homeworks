@@ -1,45 +1,46 @@
-use strict';
-
-function Student(name, gender, age) {
-    // Ваш код
+function Student (name, gender, age) {
     this.name = name;
     this.gender = gender;
     this.age = age;
 }
-
-let masha = new Student('Мария', 'Ж', 20);
-let sasha = new Student('Александр', 'М', 19);
-let petya = new Student('Пётр', 'М', 21);
-let kolya = new Student('Николай', 'М', 20);
-
+ 
+let student1 = new Student("Tony", "male", 37);
+let student2 = new Student("Buzz", "female", 35);
+ 
 Student.prototype.setSubject = function (subjectName) {
-  //ваш код
-        this.subject = subjectName;
+    this.subject = subjectName;
 }
-
-Student.prototype.addMark = function (mark) {
+ 
+Student.prototype.addMark = function(mark) {
     if(this.marks === undefined){
-        this.marks = [];
+        this.marks = [mark];   
+    } else {
+        this.marks.push(mark);
     }
-    this.marks.push(mark);
+    
 }
-
-Student.prototype.addMarks = function (...addingMarks) {
+ 
+Student.prototype.addMarks = function(...marks){
     if(this.marks === undefined){
-        this.marks = [];
+        this.marks = marks;   
+    } else {
+        this.marks = this.marks.concat(marks);
     }
-    addingMarks.forEach(mark => this.marks.push(mark));
 }
-
-Student.prototype.getAverage = function () {
-    let sum = this.marks.reduce((a, b) => a + b);
-    let average = sum  / this.marks.length;
-    return average;
+ 
+Student.prototype.getAverage = function(){
+    if(this.marks === undefined){
+        return 'Нет оценок';
+    } else {
+        return this.marks.reduce( ( a, v ) => a + v, 0 ) / this.marks.length;
+    }
 }
-
-Student.prototype.exclude = function (reason) {
+ 
+ 
+Student.prototype.exclude = function(reason){
     delete this.subject;
     delete this.marks;
-    this.excluded = reason;
+    this.reason = reason; // тут надо this.excluded = reason;
 }
+
 
