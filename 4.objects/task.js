@@ -1,8 +1,7 @@
 function Student(name, gender, age) {
     this.name = name;
     this.gender = gender;
-    this.age = age;
-    this.subject = '';
+    this.age= age;
 }
 
 Student.prototype.setSubject = function (subjectName) {
@@ -12,30 +11,33 @@ Student.prototype.setSubject = function (subjectName) {
 Student.prototype.addMark = function (mark) {
   if (this.marks === undefined) {
     this.marks = [];
+    this.marks.push(mark);
+  } else {
+    this.marks.push(mark);
   }
-
-  this.marks.push(mark);
 }
 
-Student.prototype.addMarks = function (...marks) {
+Student.prototype.addMarks = function(...marks) {
   if (this.marks === undefined) {
     this.marks = [];
+    this.marks = [...this.marks, ...marks];
+  } else {
+    this.marks = [...this.marks, ...marks];
   }
-
-  this.marks.push(...marks);
 }
 
 Student.prototype.getAverage = function () {
-  return this.marks.reduce(function (acc, mark) {
-    return acc + mark;
-  }, 0) / this.marks.length;
+  if (this.marks === undefined) {
+    return;
+  }
+  return this.marks.reduce((acc, value) => acc + value, 0) / this.marks.length;
 }
 
-Student.prototype.exclude = function (reason) {
+Student.prototype.excludeStudent = function(reason) {
+  if (this.subject === undefined) {
+    return 'Студент не участвует в учебном процессе!'
+  }
   delete this.subject;
   delete this.marks;
   this.excluded = reason;
 }
-
-
-
