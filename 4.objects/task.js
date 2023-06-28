@@ -1,4 +1,4 @@
-function Student(name, gender, age) {
+it(function Student(name, gender, age)) {
   // Ваш код
   this.name = name;
   this.gender = gender;
