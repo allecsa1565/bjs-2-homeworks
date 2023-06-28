@@ -29,9 +29,8 @@ Student.prototype.addMark = function (mark) {
 Student.prototype.addMarks = function (...mark) {
   //ваш код
 
-  if (this.marks === undefined) {
+  if (this.marks = OwnProperty('marks') {
     // добавить первую оценку 
-    this.marks = [];
     this.marks.push(...mark);
 
   } else {
@@ -42,8 +41,8 @@ Student.prototype.addMarks = function (...mark) {
 
 
 Student.prototype.getAverage = function () {
-    return this.marks.reduce((acc, item) => acc += item) / this.marks.length;
-};
+    if (this.hasOwnProperty('marks')=== fals || this.marks.length === 0);
+}
 
 
 Student.prototype.exclude = function (reason) {
