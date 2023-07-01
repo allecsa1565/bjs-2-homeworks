@@ -1,57 +1,72 @@
-//Задача № 1
 function cachingDecoratorNew(func) {
   let cache = [];
-  function wrapper(...args) {
-    const hash = md5(args);
-    let objectInCache = cache.find( item => item.hash === hash);
-    if (objectInCache) {
-      return `Из кэша: ${objectInCache.value}`;
-    }
-    let result = func(...args);
-    cache.push({"hash": hash, "value": result});
-    if (cache.length > 5) {
-      cache.shift();
-    }
-    return `Вычисляем: ${result}`;
-  }
-  return wrapper;
-}
-// Без MD5
-// function cachingDecoratorNew(func) {
-//   let cache = {};
-//   return (...args) => {
-//     const hash = args.join(`,`);
-//     let cacheKeys = Object.keys(cache);
-//     if (cacheKeys.length > 5) {
-//       delete cache[cacheKeys[0]];
-//     }
-//     if (hash in cache) {
-//       return `Из кэша: ${cache[hash]}`;
-//     }
-//     const result = func(...args);
-//     cache[hash] = result;
-//     return `Вычисляем: ${result}`;
-//   }
-// }
 
-//Задача № 2
-function debounceDecoratorNew(func, delay) {
-  let timeoutId;
-  let isTrottled = false;
   function wrapper(...args) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout( () => {
-      func(args);
-      wrapper.count++;
-    }, delay);
-    if (!isTrottled) {
-      func(...args);
-      wrapper.count++;
-      isTrottled = true;
-    }
-    wrapper.allCount++;
+      const hash = args.join(',');
+      let idx = cache.findIndex((item)=> item.hash === hash );
+      if (idx !== -1 ) {
+          console.log("Из кэша: " + cache[idx].value);
+          return "Из кэша: " + cache[idx].value;
+      }
+
+      let value = func(...args);
+
+      cache.push({
+        hash,
+        value,
+      });
+
+      if (cache.length > 5) { 
+        cache.shift(0);
+      }
+
+      console.log("Вычисляем: " + value);
+      return "Вычисляем: " + value;  
   }
-  wrapper.count = 0;
-  wrapper.allCount = 0;
   return wrapper;
 }
+
+function debounceDecoratorNew(func, timeout = 0) {
+  let timeoutId = null;
+  let canRunFunc = true;
+
+  return function wrapper(...args) {
+    if (!canRunFunc) {
+      return;
+    }
+
+    func.apply(this, args);
+
+    canRunFunc = false;
+
+    timeoutId = setTimeout(() => {
+      canRunFunc = true;
+    }, timeout);
+  }
+}
+
+function debounceDecorator2(func, timeout = 0) {
+  let timeoutId = null;
+  let canRunFunc = true;
+
+  function wrapper(...args) {
+    if (!canRunFunc) {
+      return;
+    }
+
+    func.apply(this, args);
+    wrapper.count = wrapper.count + 1;
+
+    canRunFunc = false;
+
+    timeoutId = setTimeout(() => {
+      canRunFunc = true;
+    }, timeout);
+  }
+
+  wrapper.count = 0;
+
+  return wrapper;
+}
+
+
