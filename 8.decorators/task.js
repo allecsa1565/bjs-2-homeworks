@@ -1,72 +1,89 @@
 function cachingDecoratorNew(func) {
-  let cache = [];
+  
+  let cache =[];
 
   function wrapper(...args) {
-      const hash = args.join(',');
-      let idx = cache.findIndex((item)=> item.hash === hash );
-      if (idx !== -1 ) {
-          console.log("Из кэша: " + cache[idx].value);
-          return "Из кэша: " + cache[idx].value;
+    const hash = args.join(","); //формируем хэш(уникальный признак) способом строчного перечисления параметров чрз запятую
+
+
+    let idx = cache.findIndex((item)=> item.hash === hash); // ищем элемент, хэш которого равен нашему хэшу
+
+    if (idx !== -1 ) { // если элемент найден
+        console.log("Из кэша: " + cache[idx].value); // вывод в консоль нового вычисленного значения func
+        return "Из кэша: " + cache[idx].value;
+    } else {
+         let value = func(...args); // вычисление значения свойства .value, которое станет элементом массива cashe[]. 
+         cache.push({hash, value}) ; // добавляем элемент-объект с двумя свойствами в конец массива cashe[]
+    let cashLengh = cache.length; // вычисляем длину массива cashe[]
+      if (cashLengh > 5) { 
+          cache.shift(); // если элементов в кэше больше пяти - удалить самый старый (первый) 
       }
-
-      let value = func(...args);
-
-      cache.push({
-        hash,
-        value,
-      });
-
-      if (cache.length > 5) { 
-        cache.shift(0);
-      }
-
-      console.log("Вычисляем: " + value);
-      return "Вычисляем: " + value;  
+    console.log("Вычисляем: " + value);
+    return "Вычисляем: " + value;
+    }
+     
   }
   return wrapper;
+  
 }
 
-function debounceDecoratorNew(func, timeout = 0) {
-  let timeoutId = null;
-  let canRunFunc = true;
+ // #################################### TASK 2 ############################################
 
-  return function wrapper(...args) {
-    if (!canRunFunc) {
+function debounceDecoratorNew(func, ms) {
+ 
+  let timeout;
+  let flag = false, 
+  savedArgs,
+  savedThis;
+
+  return function (...args) {
+    
+    savedArgs = args; // обновляем аргументы при каждом вызове функции func
+    savedThis = this; // обновляем контекст при каждом вызове функции func
+    if (flag) { // если флаг поднят, выходим без запуска func
       return;
     }
 
-    func.apply(this, args);
+    func.apply(this, savedArgs); // запускаем переданную функцию
+    flag = true; // взводим флаг
+    clearTimeout(timeout); //удаляем старый таймер
 
-    canRunFunc = false;
-
-    timeoutId = setTimeout(() => {
-      canRunFunc = true;
-    }, timeout);
+    timeout = setTimeout(() => { // ставим таймер,  
+    flag = false; // чтобы очистить флаг
+    func.apply(savedThis, savedArgs); // и выполнить func с последними сохранёнными аргументами и контекстом
+    }, ms);
   }
+ 
 }
 
-function debounceDecorator2(func, timeout = 0) {
-  let timeoutId = null;
-  let canRunFunc = true;
+// #################################### TASK 3 ############################################
 
-  function wrapper(...args) {
-    if (!canRunFunc) {
+function debounceDecorator2(func, ms) {
+  
+  let timeout;
+  let flag = false, 
+  savedArgs,
+  savedThis,
+  count; // счётчик вызова func
+  
+
+  return function (...args) {
+    
+    if (count === undefined) count = 0; //при первом вызове func ставим счётчик на ноль
+    savedArgs = args; // обновляем аргументы при каждом вызове функции func
+    savedThis = this; // обновляем контекст при каждом вызове функции func
+    if (flag) { // если флаг поднят, выходим без запуска func
       return;
     }
 
-    func.apply(this, args);
-    wrapper.count = wrapper.count + 1;
+    func.apply(this, savedArgs); // запускаем переданную функцию
+    flag = true; // взводим флаг
+    count += 1 // увеличиваем счётчик вызова func на 1
+    clearTimeout(timeout); //удаляем старый таймер
 
-    canRunFunc = false;
-
-    timeoutId = setTimeout(() => {
-      canRunFunc = true;
-    }, timeout);
+    timeout = setTimeout(() => { // ставим таймер,  
+    flag = false; // чтобы очистить флаг
+    func.apply(savedThis, savedArgs); // выполнить func с последними сохранёнными аргументами и контекстом,
+    count += 1; // и увеличить счётчик вызова func на 1
+    }, ms);
   }
-
-  wrapper.count = 0;
-
-  return wrapper;
-}
-
-
