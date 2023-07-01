@@ -1,52 +1,95 @@
-class AlarmClock {
+class AlarmClock  {
     constructor() {
-      this.alarmCollection = [];
-      this.intervalId = null;
+        this.alarmCollection = [];
+        this.timerId = null;
     }
-  
-    addClock(time, callback) {
-      if (!time || callback === undefined) {
-        throw new Error("Отсутствуют обязательные аргументы");
-      }
-      if (this.alarmCollection.some((alarm) => alarm.time === time)) {
-        console.warn("Уже присутствует звонок на это же время");
-      }
-      this.alarmCollection.push({ time, callback, canCall: true });
+
+    addClock(time, callback, id) {
+        if (!id) {
+            throw new Error('Отсутствует id');
+        }
+
+        const existId = this.alarmCollection.find(alarm => alarm.id === id);
+
+        if (existId) {
+            console.error('Сигнал с таким id уже существует');
+            return;
+        }
+
+        this.alarmCollection.push({
+            id: id,
+            time: time,
+            callback: callback,
+        });
     }
-    removeClock(time) {
-      this.alarmCollection = this.alarmCollection.filter(
-        (alarm) => alarm.time !== time
-      );
+
+    removeClock(id) {
+        const index = this.alarmCollection.findIndex(alarm => alarm.id === id);
+
+        if (id < 0) {
+            return false;
+        }
+
+        this.alarmCollection.splice(index, 1);
+
+        return true;
     }
-  
+
     getCurrentFormattedTime() {
-      return new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
+        const currentDate = new Date();
+        const hours = currentDate.getHours() < 10 ? `0${currentDate.getHours()}` : `${currentDate.getHours()}`;
+        const minutes = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : `${currentDate.getMinutes()}`;
+
+        return `${hours}:${minutes}`;
     }
+
     start() {
-      if (this.intervalId) {
-        return;
-      }
-      this.intervalId = setInterval(
-        () =>
-          this.alarmCollection.forEach((alarm) => {
-            if (alarm.time === this.getCurrentFormattedTime() && alarm.canCall) {
-              alarm.canCall = false;
-              alarm.callback();
-            }
-          }),
-        1000
-      );
+        if (this.timerId) {
+            return;
+        }
+
+        this.timerId = setInterval(() => {
+            this.alarmCollection.forEach((alarm) => this.checkClock(alarm));
+        }, 1000);
     }
+
     stop() {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
+        if (!this.timerId) {
+            return;
+        }
+
+        clearInterval(this.timerId);
+        this.timerId = null;
     }
-    resetAllCalls() {
-      this.alarmCollection.forEach((alarm) => (alarm.canCall = true));
+
+    checkClock(alarm) {
+        if (this.getCurrentFormattedTime() === alarm.time) {
+            alarm.callback();
+        }
     }
+
+    printAlarms() {
+        this.alarmCollection.forEach((alarm) => console.log(`Будильник №${alarm.id} заведен на ${alarm.time}`));
+    }
+
     clearAlarms() {
-      this.stop();
-      this.alarmCollection = [];
+        this.timerId = null;
+        this.alarmCollection = [];
+    }
+}
+
+function testCase() {
+    const alarmClock = new AlarmClock();
+
+    alarmClock.addClock('20:56', () => console.log('Подъем'), 1);
+    alarmClock.addClock('20:57', () => { console.log('Подъем 2'); alarmClock.removeClock(2) }, 2);
+    alarmClock.addClock('20:58', () => { 
+        console.log('Подъем 3');
+        alarmClock.stop();
+        alarmClock.clearAlarms();
+        alarmClock.printAlarms();
+    }, 3);
+    alarmClock.printAlarms();
+    alarmClock.start();
+}
+
