@@ -1,95 +1,67 @@
-class AlarmClock  {
-    constructor() {
-        this.alarmCollection = [];
-        this.timerId = null;
+class AlarmClock {
+    constructor () {
+        this.alarmCollection = [],
+        this.timerId = null
     }
-
+    
     addClock(time, callback, id) {
-        if (!id) {
-            throw new Error('Отсутствует id');
+        if (typeof id === 'undefined') {
+            throw new Error('error text');
         }
-
-        const existId = this.alarmCollection.find(alarm => alarm.id === id);
-
-        if (existId) {
-            console.error('Сигнал с таким id уже существует');
-            return;
+        else if (typeof this.alarmCollection.find(clock => clock.id === id) !== 'undefined') {
+            return console.error('The Alert already exist.');
         }
-
-        this.alarmCollection.push({
-            id: id,
-            time: time,
-            callback: callback,
-        });
+        return this.alarmCollection.push({id, time, callback});
     }
 
-    removeClock(id) {
-        const index = this.alarmCollection.findIndex(alarm => alarm.id === id);
+    removeClock (id) {
+        let inputArrLength = this.alarmCollection.length;
+        this.alarmCollection = this.alarmCollection.filter(clock => clock.id !== id);
+        let outputArrLength = this.alarmCollection.length;
+        return outputArrLength < inputArrLength;
+    }
 
-        if (id < 0) {
-            return false;
+    getCurrentFormattedTime () {
+        let zeroAdd = (number) => {
+            if (number < 10) {
+                return '0' + number;
+            }
+            return number;
         }
-
-        this.alarmCollection.splice(index, 1);
-
-        return true;
+        let actualTime = new Date();
+        let minutes = zeroAdd(actualTime.getMinutes());
+        let hours = zeroAdd(actualTime.getHours());
+        return hours + ':' + minutes;
     }
 
-    getCurrentFormattedTime() {
-        const currentDate = new Date();
-        const hours = currentDate.getHours() < 10 ? `0${currentDate.getHours()}` : `${currentDate.getHours()}`;
-        const minutes = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : `${currentDate.getMinutes()}`;
-
-        return `${hours}:${minutes}`;
-    }
-
-    start() {
-        if (this.timerId) {
-            return;
+    start () {
+        let checkClock = (clock) => {
+            let alarm = this.getCurrentFormattedTime();
+            if (clock.time === alarm) {
+                return clock.callback();
+            }
         }
-
-        this.timerId = setInterval(() => {
-            this.alarmCollection.forEach((alarm) => this.checkClock(alarm));
-        }, 1000);
-    }
-
-    stop() {
-        if (!this.timerId) {
-            return;
+        if (this.timerId === null) {
+            this.timerId = setInterval(() => {
+                this.alarmCollection.forEach(clock => checkClock(clock));
+            }, 1000);
         }
-
-        clearInterval(this.timerId);
-        this.timerId = null;
+        return;
     }
 
-    checkClock(alarm) {
-        if (this.getCurrentFormattedTime() === alarm.time) {
-            alarm.callback();
+    stop () {
+        if (this.timerId !== null) {
+            clearInterval(this.timerId);
+            return this.timerId = null;
         }
     }
 
-    printAlarms() {
-        this.alarmCollection.forEach((alarm) => console.log(`Будильник №${alarm.id} заведен на ${alarm.time}`));
+    printAlarms () {
+        return this.alarmCollection.forEach(clock => console.log(clock.id + ': ' + clock.time));
     }
 
-    clearAlarms() {
-        this.timerId = null;
-        this.alarmCollection = [];
+    clearAlarms () {
+        this.stop();
+        return this.alarmCollection = [];
     }
 }
-
-function testCase() {
-    const alarmClock = new AlarmClock();
-
-    alarmClock.addClock('20:56', () => console.log('Подъем'), 1);
-    alarmClock.addClock('20:57', () => { console.log('Подъем 2'); alarmClock.removeClock(2) }, 2);
-    alarmClock.addClock('20:58', () => { 
-        console.log('Подъем 3');
-        alarmClock.stop();
-        alarmClock.clearAlarms();
-        alarmClock.printAlarms();
-    }, 3);
-    alarmClock.printAlarms();
-    alarmClock.start();
-}
-
